@@ -62,3 +62,12 @@ b=data_df2.withColumn("tmp",arrays_zip("Amount"))\
 .select(col("ID"),col("DESC"),col("tmp.Amount").alias("Amount"))
 
 display(b)
+
+data_df_dummy=data_df1[["_id","ingredients"]]
+display(data_df_dummy)
+c=data_df_dummy.withColumn("tmp",arrays_zip("ingredients"))\
+  .withColumn("tmp", explode("tmp"))\
+  .select(col("_id.x"),col("tmp.ingredients.name"),col("tmp.ingredients.quantity.amount"),col("tmp.ingredients.quantity.unit"))
+
+
+display(c)
