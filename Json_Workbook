@@ -52,3 +52,13 @@ display( data_df1.select(col("_id").x.alias("ID"),col("desc").alias("DESC"),col(
 
 
 
+from pyspark.sql.functions import arrays_zip, col, explode
+
+
+data_df2=data_df1.select(col("_id").x.alias("ID"),col("desc").alias("DESC"),col("ingredients").quantity.amount.alias("Amount"))
+
+b=data_df2.withColumn("tmp",arrays_zip("Amount"))\
+.withColumn("tmp", explode("tmp"))\
+.select(col("ID"),col("DESC"),col("tmp.Amount").alias("Amount"))
+
+display(b)
